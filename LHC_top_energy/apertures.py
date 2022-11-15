@@ -26,12 +26,12 @@ ip5_s = 6664.5684327563
 def plot_in_triplet(s, beams=beams):
     x_b1 = beams["x_b1"](s)
     y_b1 = beams["y_b1"](s)
-    sig_x_b1 = beams["sig_x_b1"](s)
-    sig_y_b1 = beams["sig_y_b1"](s)
+    sig_x_b1 = beams["sigx_b1"](s)
+    sig_y_b1 = beams["sigy_b1"](s)
     x_b2 = beams["x_b2"](s)
     y_b2 = beams["y_b2"](s)
-    sig_x_b2 = beams["sig_x_b2"](s)
-    sig_y_b2 = beams["sig_y_b2"](s)
+    sig_x_b2 = beams["sigx_b2"](s)
+    sig_y_b2 = beams["sigy_b2"](s)
     
     theta = np.linspace(0,2*np.pi,1000)
     circle_x = np.cos(theta)

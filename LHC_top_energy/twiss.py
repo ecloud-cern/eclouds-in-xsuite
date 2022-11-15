@@ -1,43 +1,30 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import json
-import scipy.interpolate
 import pickle as pkl
 
-import xtrack as xt
-import xfields as xf
-import xpart as xp
-import xobjects as xo
+import matplotlib.pyplot as plt
+import numpy as np
+import scipy.interpolate
+from scipy.constants import c
 
+import xfields as xf
+import xobjects as xo
+import xpart as xp
+import xtrack as xt
+
+import LHC_IT
 
 nemitt_x = 2.0e-6
 nemitt_y = 2.0e-6
 std_zeta = 0.090
+
 def get_delta_std(zeta_std):
     params = [-4.64975248e-03,  1.62153983e-03, -9.61004104e-06]
     return params[0] * zeta_std**2 + params[1] * zeta_std + params[2]
 std_delta =  get_delta_std(std_zeta)
 
-def disable_beambeam(line):
-    for ii, el in enumerate(line.elements):
-        elcl = el.__class__
-        is_multi = isinstance(el, xt.beam_elements.elements.Multipole)
-        is_drift = isinstance(el, xt.beam_elements.elements.Drift)
-        is_cav = isinstance(el, xt.beam_elements.elements.Cavity)
-        is_diped = isinstance(el, xt.beam_elements.elements.DipoleEdge)
-        is_bb2d = isinstance(el, xf.beam_elements.beambeam2d.BeamBeamBiGaussian2D)
-        is_bb3d = isinstance(el, xf.beam_elements.beambeam3d.BeamBeamBiGaussian3D)
-        if is_bb2d:
-            el.scale_strength=0
-        if is_bb3d:
-            el.scale_strength=0
-
 context = xo.ContextCpu()
 
 line_folder = 'Lines/run3_collisions_30cm_160urad_1.2e11_2.0um_62.310_60.320_15_430_0.001/'
-#fname_line = 'line_bb_for_tracking_no_coupling.json'
-# with open(line_folder + "line_bb_for_tracking.json", 'r') as fid:
-#      input_data_tracking = json.load(fid)
 with open(line_folder + "line_b1_tracking.json", 'r') as fid:
      input_data_b1 = json.load(fid)
 with open(line_folder + "line_b4_tracking.json", 'r') as fid:
@@ -83,15 +70,6 @@ MQXA_L = 6.37
 MQXB_L = 5.55
 
 
-def plot_triplets(ax=None):
-    ax.fill_between([MQXA_3L5_s - MQXA_L/2., MQXA_3L5_s + MQXA_L/2.], [-500,-500], [9000,9000], color="b", alpha=0.5)
-    ax.fill_between([MQXB_B2L5_s - MQXA_L/2., MQXB_B2L5_s + MQXB_L/2.], [-500,-500], [9000,9000], color="b", alpha=0.5)
-    ax.fill_between([MQXB_A2L5_s - MQXA_L/2., MQXB_A2L5_s + MQXB_L/2.], [-500,-500], [9000,9000], color="b", alpha=0.5)
-    ax.fill_between([MQXA_1L5_s - MQXA_L/2., MQXA_1L5_s + MQXA_L/2.], [-500,-500], [9000,9000], color="b", alpha=0.5)
-    ax.fill_between([MQXA_1R5_s - MQXA_L/2., MQXA_1R5_s + MQXA_L/2.], [-500,-500], [9000,9000], color="b", alpha=0.5)
-    ax.fill_between([MQXB_A2R5_s - MQXA_L/2., MQXB_A2R5_s + MQXB_L/2.], [-500,-500], [9000,9000], color="b", alpha=0.5)
-    ax.fill_between([MQXB_B2R5_s - MQXA_L/2., MQXB_B2R5_s + MQXB_L/2.], [-500,-500], [9000,9000], color="b", alpha=0.5)
-    ax.fill_between([MQXA_3R5_s - MQXA_L/2., MQXA_3R5_s + MQXA_L/2.], [-500,-500], [9000,9000], color="b", alpha=0.5)
 
 
 plt.close("all")
@@ -228,8 +206,18 @@ ax62.set_xlim(ip5_s - 60, ip5_s + 60)
 ax62.set_ylim(-400., 400.)
 ax62.legend()
 
-for ax in ax11, ax12, ax21, ax22, ax31, ax32, ax41, ax42, ax51, ax52, ax61, ax62:
-    plot_triplets(ax=ax)
+Bgrad_calc = LHC_IT.Bgrad_class(line_b1)
+xx = np.linspace(0., 27000, 270000)
+yy = np.array([Bgrad_calc.get_Bgrad(s) for s in xx], dtype=float)
+fig10 = plt.figure(10)
+ax10 = fig10.add_subplot(111)
+ax10.plot(xx,np.array(yy), "k.-")
+ax10.set_xlabel("s [m]")
+ax10.set_ylabel("grad B [T/m]")
+ax10.set_ylim(-210, 210)
+
+for ax in ax11, ax12, ax21, ax22, ax31, ax32, ax41, ax42, ax51, ax52, ax61, ax62, ax10:
+    LHC_IT.plot_triplets(ax=ax)
 
 for ax in ax11, ax21, ax31, ax41, ax51, ax61:
     ax.set_title("Beam 1")
@@ -242,12 +230,17 @@ for fig in fig1, fig2, fig3, fig4, fig5, fig6:
 interp_dict = {
 "x_b1" : scipy.interpolate.interp1d(twiss_b1['s'], twiss_b1["x"]),
 "y_b1" : scipy.interpolate.interp1d(twiss_b1['s'], twiss_b1["y"]),
-"sig_x_b1" : scipy.interpolate.interp1d(twiss_b1['s'], sigx_b1),
-"sig_y_b1" : scipy.interpolate.interp1d(twiss_b1['s'], sigy_b1),
+"sigx_b1" : scipy.interpolate.interp1d(twiss_b1['s'], sigx_b1),
+"sigy_b1" : scipy.interpolate.interp1d(twiss_b1['s'], sigy_b1),
+"betx_b1" : scipy.interpolate.interp1d(twiss_b1['s'], twiss_b1["betx"]),
+"bety_b1" : scipy.interpolate.interp1d(twiss_b1['s'], twiss_b1["bety"]),
 "x_b2" : scipy.interpolate.interp1d(twiss_b2['s'], twiss_b2["x"]),
 "y_b2" : scipy.interpolate.interp1d(twiss_b2['s'], twiss_b2["y"]),
-"sig_x_b2" : scipy.interpolate.interp1d(twiss_b2['s'], sigx_b2),
-"sig_y_b2" : scipy.interpolate.interp1d(twiss_b2['s'], sigy_b2),
+"sigx_b2" : scipy.interpolate.interp1d(twiss_b2['s'], sigx_b2),
+"sigy_b2" : scipy.interpolate.interp1d(twiss_b2['s'], sigy_b2),
+"betx_b2" : scipy.interpolate.interp1d(twiss_b2['s'], twiss_b2["betx"]),
+"bety_b2" : scipy.interpolate.interp1d(twiss_b2['s'], twiss_b2["bety"]),
+"Bgrad_cl" : Bgrad_calc,
 }
 #t_offset = 2 * (s - s_ip) / c
 
