@@ -258,7 +258,7 @@ def get_rectcircle(halfwidth, halfheight, radius):
     p1 = sg.Point(0,0).buffer(radius)
     aperture = so.clip_by_rect(p1, -halfwidth, -halfheight, halfwidth, halfheight)
     coords = np.array(list(aperture.exterior.coords))
-    return coords
+    return coords[::-1][:-1]
 
 mqxa_1_offset = 26.15
 mqxb_a2_offset = 34.8
