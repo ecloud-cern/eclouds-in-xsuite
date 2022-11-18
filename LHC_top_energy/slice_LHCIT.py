@@ -1,14 +1,10 @@
-import matplotlib.pyplot as plt
-import matplotlib
-import shapely.geometry as sg
-import shapely.ops as so
 import numpy as np
+import scipy.io
 import pickle
 from scipy.constants import c
 import json
 
 import LHC_IT
-
 
 def prep_slices(beams=None, ecloud_type="Q1L5"):
     assert beams is not None
@@ -41,7 +37,7 @@ def prep_slices(beams=None, ecloud_type="Q1L5"):
                          "betx_b2" : float(beams["betx_b2"](s)),
                          "bety_b2" : float(beams["bety_b2"](s)),
                          "Bgrad" : float(beams["Bgrad_cl"].get_Bgrad(s)),
-                         "t_offset_s" : 2 * (s - LHC_IT.IP_s[IP]) / c,
+                         "t_offset_s" : - 2 * (s - LHC_IT.IP_s[IP]) / c,
                          "beamscreen" : beamscreen
                         }
     return eclouds
@@ -53,14 +49,17 @@ ecloud_types = list(LHC_IT.length.keys())
 for ecloud_type in ecloud_types:
     eclouds_info.update(prep_slices(ecloud_type=ecloud_type, beams=beams))
 
-
 with open(f"eclouds_LHCIT_v1.json","w") as outfile:
     json.dump(eclouds_info, outfile, indent=4)
 
-bs001 = LHC_IT.get_rectcircle(halfwidth=0.02202, halfheight=0.01714, radius=0.02202)
-bs010 = LHC_IT.get_rectcircle(halfwidth=0.0192, halfheight=0.0241, radius=0.0241)
-bs012 = LHC_IT.get_rectcircle(halfwidth=0.0241, halfheight=0.029, radius=0.029)
-bs003 = LHC_IT.get_rectcircle(halfwidth=0.0241, halfheight=0.0192, radius=0.0241)
-bs005 = LHC_IT.get_rectcircle(halfwidth=0.029, halfheight=0.0241, radius=0.029)
 
-plt.show()
+names = ["LHC_BS010.mat", "LHC_BS012.mat", "LHC_BS003.mat", "LHC_BS005.mat"]
+halfwidths = [0.0192, 0.0241, 0.0241, 0.029]
+halfheights = [0.0241, 0.029, 0.0192, 0.0241]
+radii = [0.0241, 0.029, 0.0241, 0.029]
+
+for fname, halfwidth, halfheight, radius in zip(names, halfwidths, halfheights, radii):
+    bs_coords = LHC_IT.get_rectcircle(halfwidth=halfwidth, halfheight=halfheight, radius=radius)
+    bs_dict = {"Vx": bs_coords[:,0], "Vy" : bs_coords[:,1], 
+              "x_sem_ellip_insc": halfwidth, "y_sem_ellip_insc" : halfheight}
+    scipy.io.savemat("Beam_chambers/" + fname, bs_dict, oned_as="row")
