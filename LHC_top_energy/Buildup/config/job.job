@@ -1,0 +1,22 @@
+#!/bin/bash
+
+
+conda activate xsuite
+which python
+
+CURRDIR=/home/kparasch/workspace/eclouds-in-xsuite/LHC_top_energy/Buildup/simulations/LHC6.8TeV_v1_Q1R5_0_sey1.35_1.20e11ppb_3x48_N100000_Dt5.0e-12_Dhb0.5e-4_Dhcsc1.0e-05_Dtsc_0.5e-9
+export CURRDIR
+
+echo $PYTHONPATH
+
+# Copy input and executable
+cp ${PYTHONPATH}/PyECLOUD/main.py .
+
+cp ${CURRDIR}/*.input .
+cp ${CURRDIR}/*.beam .
+cp ${CURRDIR}/*.mat .
+
+python main.py
+
+#save result
+cp Pyecltest.mat ${CURRDIR}
