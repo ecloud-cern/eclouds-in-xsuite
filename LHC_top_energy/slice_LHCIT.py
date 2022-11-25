@@ -16,6 +16,11 @@ def prep_slices(beams=None, ecloud_type="Q1L5"):
     s_edges = np.linspace(s_start, s_end, n_slices + 1)
 
     s_positions = (s_edges[1:] + s_edges[:-1])/2.
+
+
+    # reverse to have index 0 closest to IP
+    if "L" in ecloud_type:
+        s_positions = s_positions[::-1]    
     IP = ecloud_type[-1]
 
     eclouds = {}
