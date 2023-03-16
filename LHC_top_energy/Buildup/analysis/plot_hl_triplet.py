@@ -17,49 +17,28 @@ mqxb_L = 5.5
 ip5_s = 6664.5684327563
 
 eclouds = json.load(open("../../eclouds_LHCIT_v1.json","r"))
-heatloads_135 = json.load(open(f"LHCIT_heatloads_SEY1.35_1.20e11ppb.json","r"))
-heatloads_130 = json.load(open(f"LHCIT_heatloads_SEY1.30_1.20e11ppb.json","r"))
-heatloads_125 = json.load(open(f"LHCIT_heatloads_SEY1.25_1.20e11ppb.json","r"))
-heatloads_120 = json.load(open(f"LHCIT_heatloads_SEY1.20_1.20e11ppb.json","r"))
-heatloads_115 = json.load(open(f"LHCIT_heatloads_SEY1.15_1.20e11ppb.json","r"))
-heatloads_110 = json.load(open(f"LHCIT_heatloads_SEY1.10_1.20e11ppb.json","r"))
-heatloads_105 = json.load(open(f"LHCIT_heatloads_SEY1.05_1.20e11ppb.json","r"))
+sey_list = np.array([1.05,1.10, 1.15, 1.20, 1.25, 1.30, 1.35])[::-1]
+heatload_dict = {sey: json.load(open(f"LHCIT_heatloads_SEY{sey:.2f}_1.20e11ppb.json","r")) for sey in sey_list}
 
-heatload_135 = []
-heatload_130 = []
-heatload_125 = []
-heatload_120 = []
-heatload_115 = []
-heatload_110 = []
-heatload_105 = []
+heatloads = {sey : [] for sey in heatload_dict.keys()}
+
 s = []
 for key in eclouds.keys():
-    if "r5." in key:
+    if "r5." in key and "l5." not in key:
         s.append(eclouds[key]["s"])
-        heatload_135.append(heatloads_135[key])
-        heatload_130.append(heatloads_130[key])
-        heatload_125.append(heatloads_125[key])
-        heatload_120.append(heatloads_120[key])
-        heatload_115.append(heatloads_115[key])
-        heatload_110.append(heatloads_110[key])
-        heatload_105.append(heatloads_105[key])
+        for sey in heatload_dict.keys():
+            heatloads[sey].append(heatload_dict[sey][key])
 
 aso = np.argsort(s)
 
 s = np.array(s)[aso]
-heatload_135 = np.array(heatload_135)[aso]
-heatload_130 = np.array(heatload_130)[aso]
-heatload_125 = np.array(heatload_125)[aso]
-heatload_120 = np.array(heatload_120)[aso]
-heatload_115 = np.array(heatload_115)[aso]
-heatload_110 = np.array(heatload_110)[aso]
-heatload_105 = np.array(heatload_105)[aso]
+for sey in heatload_dict.keys():
+    heatloads[sey] = np.array(heatloads[sey])[aso]
 
-fig = plt.figure(1)
+fig = plt.figure(1,figsize=[12,5])
 ax = fig.add_subplot(111)
-ax.plot(s - ip5_s, heatload_135, "o", label="SEY=1.35")
-ax.plot(s - ip5_s, heatload_130, "o", label="SEY=1.30")
-ax.plot(s - ip5_s, heatload_125, "o", label="SEY=1.25")
+for sey in heatload_dict.keys():
+    ax.plot(s - ip5_s, heatloads[sey], ".-", label=f"SEY={sey:.2f}")
 
 ax.set_xlabel("s [m]")
 ax.set_ylabel("Number of electrons [e$^{-}$/m]")
@@ -74,20 +53,16 @@ ax.set_ylim(0,1.e10)
 for ii in range(20):
     ax.axvline(0.5*ii*25e-9*c,ls="--", c='r')
 
-ax.legend(loc="upper left")
+ax.legend(bbox_to_anchor=(1.1, 1.05),  loc='upper left', prop={'size':14})
+fig.tight_layout()
 
-sey_list = np.array([1.05, 1.10, 1.15, 1.20, 1.25, 1.30, 1.35])
+
 s_list = s - ip5_s
 XX, YY = np.meshgrid(s_list, sey_list, indexing="ij")
 
-HL2D = np.zeros([len(heatload_125), len(sey_list)])
-HL2D[:,0] = heatload_105
-HL2D[:,1] = heatload_110
-HL2D[:,2] = heatload_115
-HL2D[:,3] = heatload_120
-HL2D[:,4] = heatload_125
-HL2D[:,5] = heatload_130
-HL2D[:,6] = heatload_135
+HL2D = np.zeros([len(s), len(sey_list)])
+for ii, sey in enumerate(heatload_dict.keys()):
+    HL2D[:, ii] = heatloads[sey]
 
 fig2 = plt.figure(2)
 ax2 = fig2.add_subplot(111)

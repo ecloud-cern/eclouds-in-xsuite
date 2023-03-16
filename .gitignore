@@ -2,3 +2,6 @@
 eclouds
 *.mat
 *.pkl
+*.png
+*.h5
+*.mp4
