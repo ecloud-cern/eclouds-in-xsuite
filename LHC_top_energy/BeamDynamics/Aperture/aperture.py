@@ -18,7 +18,7 @@ start_running = time.time()
 parser = argparse.ArgumentParser()
 parser.add_argument('--filename', nargs='?', default='delete.h5', type=str)
 parser.add_argument('--num_turns', nargs='?', default=100, type=int)
-parser.add_argument('--num_particles', nargs='?', default=2764*6, type=int)
+parser.add_argument('--num_particles', nargs='?', default=2764*1, type=int)
 parser.add_argument('--sigma', nargs='?', default=7, type=float)
 parser.add_argument('--zeta', nargs='?', default=0, type=float)
 parser.add_argument('--pzeta', nargs='?', default=2.7e-4, type=float)
@@ -34,7 +34,7 @@ zeta = args.zeta
 pzeta = args.pzeta
 ecloud_type = args.ecloud_type
 num_stores = 100
-n_iter = 5
+n_iter = 30
 output_filename = f"DA_Beam{args.beam:d}_pzeta{pzeta:.2e}.h5"
 
 Line_folder = "../../Lines/run3_collisions_30cm_160urad_1.2e11_2.0um_62.310_60.320_15_430_0.001/"
@@ -46,7 +46,7 @@ line.particle_ref = xp.Particles(p0c=input_data['particle_on_tracker_co']["p0c"]
 with open("../../eclouds_LHCIT_v1.json", "r") as fid:
     eclouds = json.load(fid)
 
-context = xo.ContextCupy()
+context = xo.ContextCpu()
 collimators.collimator_setup(line, context, number_of_sigmas=5., reference_norm_emit=3.5e-6, verbose=False)
 
 these_eclouds = [key for key in eclouds.keys() if ecloud_type in key]
@@ -77,7 +77,7 @@ tracker = xt.Tracker(_context=context, line=line)
 ##tracker.optimize_for_tracking()
 
 pzeta=2.7e-4
-pzeta_list = np.linspace(0., 3.e-4, 20)
+pzeta_list = list(np.linspace(0., 3.e-4, 20))
 yxmin = {}
 yxmax = {}
 yymin = {}
@@ -139,5 +139,7 @@ save_dict = {"pzeta" : pzeta_list,
              "xmin" : yxmin, "xmax" : yxmax,
              "ymin" : yymin, "ymax" : yymax,
              }
-pickle.dump(save_dict, open(f"aperture_{ecloud_type}.pkl", "wb"))
+#pickle.dump(save_dict, open(f"aperture_{ecloud_type}.pkl", "wb"))
+with open(f"aperture_{ecloud_type}.json","w") as outfile:
+    json.dump(eclouds_info, outfile, indent=4)
 end_running = time.time()
