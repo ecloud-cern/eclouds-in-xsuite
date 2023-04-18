@@ -24,6 +24,6 @@ def assign_MBB_errors_26GeV(madx, random=True, seed=98634628):
 
     madx.input(f"eoption, seed={seed};")
     madx.input("select, flag=error, clear=true;")
-    madx.input("select, flag=error, class=multipole, pattern=\"^MBA\";")
+    madx.input("select, flag=error, class=multipole, pattern=\"^MBB\";")
     madx.input("efcomp, dkn:={0., 0., b3b + b3br*tgauss(3), 0., b5b + b5br*tgauss(3), 0., b7b + b7br*tgauss(3)};")
     return
