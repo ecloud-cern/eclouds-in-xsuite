@@ -4,7 +4,7 @@
 conda activate xsuite
 which python
 
-CURRDIR=/home/kparasch/workspace/eclouds-in-xsuite/LHC_top_energy/Buildup/simulations/LHC6.8TeV_v1_Q1R5_0_sey1.35_1.20e11ppb_3x48_N100000_Dt5.0e-12_Dhb0.5e-4_Dhcsc1.0e-05_Dtsc_0.5e-9
+CURRDIR=/home/kparasch/workspace/eclouds-in-xsuite/LHC_top_energy/Buildup/simulations/LHC6.8TeV_v1_DR23R5_27_sey1.35_1.20e11ppb_test
 export CURRDIR
 
 echo $PYTHONPATH
