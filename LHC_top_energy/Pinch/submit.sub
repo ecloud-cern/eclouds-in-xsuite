@@ -1,0 +1,11 @@
+universe = vanilla
+executable = executable.sh
+arguments = "$(ecloud) 1.35"
+output = log/$(ecloud)_$(ClusterId).$(ProcId).out
+error = log/$(ecloud)_$(ClusterId).$(ProcId).err
+log = log/$(ecloud)_$(ClusterID).$(ProcId).log
+transfer_output_files   = ""
++SingularityImage = "/cvmfs/unpacked.cern.ch/registry.cern.ch/ecloud-scrubbing/pyecloud:2024.1"
+#request_CPUs = 1
++JobFlavour = "longlunch"
+queue ecloud from ecloud_list.txt
