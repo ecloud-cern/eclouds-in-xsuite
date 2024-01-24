@@ -3,6 +3,7 @@ import scipy.io
 import pickle
 from scipy.constants import c
 import json
+import os
 
 import LHC_IT
 
@@ -58,11 +59,12 @@ with open(f"eclouds_LHCIT_v1.json","w") as outfile:
     json.dump(eclouds_info, outfile, indent=4)
 
 
-names = ["LHC_BS010.mat", "LHC_BS012.mat", "LHC_BS003.mat", "LHC_BS005.mat"]
-halfwidths = [0.0192, 0.0241, 0.0241, 0.029]
-halfheights = [0.0241, 0.029, 0.0192, 0.0241]
-radii = [0.0241, 0.029, 0.0241, 0.029]
+names = ["LHC_BS010.mat", "LHC_BS012.mat", "LHC_BS003.mat", "LHC_BS005.mat", "LHC_BS007.mat", "LHC_BS014.mat"]
+halfwidths = [0.0192, 0.0241, 0.0241, 0.029, 0.0347, 0.0298]
+halfheights = [0.0241, 0.029, 0.0192, 0.0241, 0.0298, 0.0347]
+radii = [0.0241, 0.029, 0.0241, 0.029, 0.0347, 0.0347]
 
+os.makedirs("Beam_chambers/", exist_ok=True)
 for fname, halfwidth, halfheight, radius in zip(names, halfwidths, halfheights, radii):
     bs_coords = LHC_IT.get_rectcircle(halfwidth=halfwidth, halfheight=halfheight, radius=radius)
     bs_dict = {"Vx": bs_coords[:,0], "Vy" : bs_coords[:,1], 

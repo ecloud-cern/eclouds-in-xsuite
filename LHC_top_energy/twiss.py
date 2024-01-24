@@ -44,10 +44,14 @@ line_b2 = xt.Line.from_dict(input_data_b2)
 line_b2.particle_ref = xp.Particles(p0c=input_data_b2["particle_on_tracker_co"]["p0c"])
 
 
-tracker_b1 = xt.Tracker(_context=context, line=line_b1)
-tracker_b2 = xt.Tracker(_context=context, line=line_b2)
-twiss_b1 = tracker_b1.twiss()
-twiss_b2 = tracker_b2.twiss().reverse()
+# tracker_b1 = xt.Tracker(_context=context, line=line_b1)
+# tracker_b2 = xt.Tracker(_context=context, line=line_b2)
+# twiss_b1 = tracker_b1.twiss()
+# twiss_b2 = tracker_b2.twiss().reverse()
+line_b1.build_tracker()
+line_b2.build_tracker()
+twiss_b1 = line_b1.twiss()
+twiss_b2 = line_b2.twiss().reverse()
 
 start_IR1 = 19725
 end_IR1 = 20263
