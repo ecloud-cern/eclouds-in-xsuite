@@ -11,7 +11,7 @@ from scipy.constants import e as qe
 
 firs_pass = 0
 last_pass = 400
-folder = "/home/kparasch/workspace/eclouds-in-xsuite/LHC_top_energy/Buildup/simulations/LHC6.8TeV_v1_Q1R5_0_sey1.35_1.20e11ppb_multi5/"
+folder = "/home/kparasch/workspace/eclouds-in-xsuite/LHC_top_energy/Buildup/simulations/LHC6.8TeV_v1_DR23R5_27_sey1.35_1.20e11ppb_test/"
 
 sim = folder.split("/")[-2]
 ecloud_type = sim.split("_")[2]

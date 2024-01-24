@@ -13,7 +13,7 @@ export PYTHONPATH=/home/HPC/kparasch/ecloud_xsuite/PyFRIENDS
 conda activate xsuite
 which python
 
-CURRDIR=/gpfs/gpfs/gpfs_maestro_home_new/hpc/kparasch/ecloud_xsuite/eclouds-in-xsuite/LHC_top_energy/Buildup/simulations_SEY1.50/LHC6.8TeV_v1_DR23R1_31_sey1.50_1.20e11ppb
+CURRDIR=/home/kparasch/workspace/eclouds-in-xsuite/LHC_top_energy/Buildup/simulations/LHC6.8TeV_v1_DR23R5_27_sey1.35_1.20e11ppb_test
 export CURRDIR
 
 echo $PYTHONPATH
