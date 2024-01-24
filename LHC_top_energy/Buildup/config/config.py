@@ -20,12 +20,8 @@ scan_folder = study_folder + f"/simulations_SEY{del_max:.2f}"
 with open(config_dir + "/../../eclouds_LHCIT_v1.json","r") as fid:
     eclouds_info = json.load(fid)
 #eclouds_info = {"ecloud.q1l5.ir5.63" : eclouds_info["ecloud.q1l5.ir5.63"]}
-<<<<<<< HEAD
-#eclouds_info = {"ecloud.q1r5.ir5.0" : eclouds_info["ecloud.q1r5.ir5.0"]}
-=======
-my_ecloud = "ecloud.dr23r5.ir5.27"
-eclouds_info = {my_ecloud : eclouds_info[my_ecloud]}
->>>>>>> origin/main
+# my_ecloud = "ecloud.dr23r5.ir5.27"
+# eclouds_info = {my_ecloud : eclouds_info[my_ecloud]}
 
 fact_beam = 1.2e11
 # del_max_vect = np.arange(1.0, 1.61, 0.1)
