@@ -1,5 +1,14 @@
 #!/bin/bash
 
+#SBATCH --ntasks=1
+#SBATCH --job-name=LHC6.8TeV_v1_DR23R1_31_sey1.50_1.20e11ppb
+#SBATCH --output=output.txt
+#SBATCH --partition=slurm_hpc_acc
+
+source /home/HPC/kparasch/ecloud_xsuite/miniforge3/bin/activate xsuite
+
+export PYTHONPATH=/home/HPC/kparasch/ecloud_xsuite/PyFRIENDS
+
 
 conda activate xsuite
 which python

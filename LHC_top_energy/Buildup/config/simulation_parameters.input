@@ -16,7 +16,7 @@ t_end=1e-9;       #s (no effect if log. profile is imported from file)
 
 import numpy as np
 dec_fact_out = int(np.round(5 * 25e-12/Dt))
-save_mat_every = 16
+save_mat_every = 6
 
 lam_th=1.e2        #e-/m
 Dx_hist=1.e-3      #m
@@ -29,11 +29,11 @@ En_hist_max= 1000.  #eV
 
 t_ion=100.;        #s
 
-N_mp_max=100000;   #size of allocated vectors 
+N_mp_max=180000;   #size of allocated vectors 
 
 #Regen parameters
 
-N_mp_regen=150000;
+N_mp_regen=200000;
 N_mp_regen_low=5000;
 N_mp_after_regen=10000;
 t_ON_regen_low=0.

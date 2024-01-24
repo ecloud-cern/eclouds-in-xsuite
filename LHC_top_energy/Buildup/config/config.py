@@ -14,17 +14,17 @@ current_dir = os.path.realpath(__file__)
 config_dir = os.path.dirname(current_dir) + "/"
 study_folder =  current_dir.split("/config")[0]
 
-scan_folder = study_folder + "/simulations"
+del_max = 1.50
+scan_folder = study_folder + f"/simulations_SEY{del_max:.2f}"
 
 with open(config_dir + "/../../eclouds_LHCIT_v1.json","r") as fid:
     eclouds_info = json.load(fid)
 #eclouds_info = {"ecloud.q1l5.ir5.63" : eclouds_info["ecloud.q1l5.ir5.63"]}
-my_ecloud = "ecloud.dr23r5.ir5.27"
-eclouds_info = {my_ecloud : eclouds_info[my_ecloud]}
+# my_ecloud = "ecloud.dr23r5.ir5.27"
+# eclouds_info = {my_ecloud : eclouds_info[my_ecloud]}
 
 fact_beam = 1.2e11
 # del_max_vect = np.arange(1.0, 1.61, 0.1)
-del_max = 1.35
 Dt = 5e-12
 energy_eV = 6800e9
 
@@ -55,6 +55,9 @@ for key in eclouds_info.keys():
     os.mkdir(current_sim_folder)
     sim_tag = tag_prefix+'%05d'%prog_num
     print(sim_tag, current_sim_ident)
+
+    rl.replaceline_and_save(fname = config_dir + "job.job",
+                            findln = "#SBATCH --job-name=", newline=f"#SBATCH --job-name={current_sim_ident}\n")
     
     rl.replaceline_and_save(fname = config_dir + "secondary_emission_parameters.input",
                             findln = "del_max =", newline = f"del_max = {del_max:f}\n")
@@ -130,8 +133,12 @@ for key in eclouds_info.keys():
 
     shutil.copy(config_dir + chamber, current_sim_folder)
     
+    with open(study_folder + f"/list_of_simulations_SEY{del_max:.2f}.txt", "a") as myfile:
+            myfile.write(current_sim_ident+"\n")
+
     for ff in tobecopied:
         shutil.copy(config_dir + "/" + ff, current_sim_folder)
+
 #    os.system('cp -r %s %s'%(tobecopied, current_sim_folder))
 
 ## for ii,device in enumerate(multipoles):

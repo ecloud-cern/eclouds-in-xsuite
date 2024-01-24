@@ -7,11 +7,11 @@ nemitty = 2.08e-6*1.2   #m
 betafx = 0.
 betafy = 0.
 
-sigmax = 6.993408e-04
-sigmay = 6.937332e-04
+sigmax = 1.229560e-03
+sigmay = 1.182759e-03
 
-x_beam_pos = 3.682422e-03
-y_beam_pos = -4.853372e-07
+x_beam_pos = -9.093754e-07
+y_beam_pos = 6.080280e-03
 
 beam_field_file =-1
 Dh_beam_field=0.5e-4
@@ -30,5 +30,5 @@ flag_bunched_beam = 1 # 1: bunched beam 0:load profile from file
 # to be filled in case of bunched beam
 sigmaz = 9.000000e-02
 t_offs = 2.5e-9
-filling_pattern_file = 2*(3*(48*[1.]+8*[0.])+32*[0.])
+filling_pattern_file = 2*(3*(48*[1.]+8*[0.])+32*[0.]) + [0.]
 

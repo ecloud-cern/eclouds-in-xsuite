@@ -5,13 +5,13 @@ chamb_type = 'polyg_cython'
 flag_assume_convex = False
 
 #For polygonal chamber
-filename_chm = 'LHC_BS010.mat'
+filename_chm = 'LHC_BS005.mat'
 
 # Choose track_method= 'StrongBdip' / 'StrongBgen'/ 'Boris'
 track_method= 'BorisMultipole'
 N_sub_steps = 5
 
-B_multip = [0., 1.977007e+02]
+B_multip = [0., 0.000000e+00]
 B_skew = [0., 0.]
 
 
