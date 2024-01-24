@@ -7,15 +7,16 @@ beam_parameters_file='beam1.beam'
 secondary_beams_file_list = ['beam2.beam']
 #additional_clouds_file_list = ['electrons2.cloud']
 
-logfile_path = '/home/kparasch/workspace/eclouds-in-xsuite/LHC_top_energy/Buildup/simulations/LHC6.8TeV_v1_Q1R5_0_sey1.35_1.20e11ppb_3x48_N100000_Dt5.0e-12_Dhb0.5e-4_Dhcsc1.0e-05_Dtsc_0.5e-9/logfile.txt'
-progress_path = '/home/kparasch/workspace/eclouds-in-xsuite/LHC_top_energy/Buildup/simulations/progress/LHC6.8TeV_v100004'
-stopfile = '/home/kparasch/workspace/eclouds-in-xsuite/LHC_top_energy/Buildup/simulations/progress/stop'
+logfile_path = '/gpfs/gpfs/gpfs_maestro_home_new/hpc/kparasch/ecloud_xsuite/eclouds-in-xsuite/LHC_top_energy/Buildup/simulations_SEY1.50/LHC6.8TeV_v1_DR23R1_31_sey1.50_1.20e11ppb/logfile.txt'
+progress_path = '/gpfs/gpfs/gpfs_maestro_home_new/hpc/kparasch/ecloud_xsuite/eclouds-in-xsuite/LHC_top_energy/Buildup/simulations_SEY1.50/progress/LHC6.8TeV_v101344'
+stopfile = '/gpfs/gpfs/gpfs_maestro_home_new/hpc/kparasch/ecloud_xsuite/eclouds-in-xsuite/LHC_top_energy/Buildup/simulations_SEY1.50/progress/stop'
 
 Dt = 5.000000e-12
 t_end=1e-9;       #s (no effect if log. profile is imported from file)
 
 import numpy as np
 dec_fact_out = int(np.round(5 * 25e-12/Dt))
+save_mat_every = 6
 
 lam_th=1.e2        #e-/m
 Dx_hist=1.e-3      #m
@@ -28,11 +29,11 @@ En_hist_max= 1000.  #eV
 
 t_ion=100.;        #s
 
-N_mp_max=100000;   #size of allocated vectors 
+N_mp_max=180000;   #size of allocated vectors 
 
 #Regen parameters
 
-N_mp_regen=150000;
+N_mp_regen=200000;
 N_mp_regen_low=5000;
 N_mp_after_regen=10000;
 t_ON_regen_low=0.
@@ -74,7 +75,7 @@ flag_verbose_stdout = False
 flag_detailed_MP_info = 0
 dec_fac_secbeam_prof=dec_fact_out
 
-el_density_probes = [{'x' : 3.682422e-03, 'y': -4.853372e-07, 'r_obs': 1e-3},{'x' : -3.632543e-03, 'y': 6.045260259556515e-07, 'r_obs': 1e-3}]
+el_density_probes = [{'x' : -9.093754e-07, 'y': 6.080280e-03, 'r_obs': 1e-3},{'x' : 2.226031e-06, 'y': -0.0062321836096653795, 'r_obs': 1e-3}]
 #	[\
 #	{'x' : .007, 'y': .004, 'r_obs': 1e-3},\
 #	{'x' : .007, 'y': -.004, 'r_obs': 1e-3}]

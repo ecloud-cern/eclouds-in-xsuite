@@ -1,10 +1,19 @@
 #!/bin/bash
 
+#SBATCH --ntasks=1
+#SBATCH --job-name=LHC6.8TeV_v1_DR23R1_31_sey1.50_1.20e11ppb
+#SBATCH --output=output.txt
+#SBATCH --partition=slurm_hpc_acc
+
+source /home/HPC/kparasch/ecloud_xsuite/miniforge3/bin/activate xsuite
+
+export PYTHONPATH=/home/HPC/kparasch/ecloud_xsuite/PyFRIENDS
+
 
 conda activate xsuite
 which python
 
-CURRDIR=/home/kparasch/workspace/eclouds-in-xsuite/LHC_top_energy/Buildup/simulations/LHC6.8TeV_v1_Q1R5_0_sey1.35_1.20e11ppb_3x48_N100000_Dt5.0e-12_Dhb0.5e-4_Dhcsc1.0e-05_Dtsc_0.5e-9
+CURRDIR=/gpfs/gpfs/gpfs_maestro_home_new/hpc/kparasch/ecloud_xsuite/eclouds-in-xsuite/LHC_top_energy/Buildup/simulations_SEY1.50/LHC6.8TeV_v1_DR23R1_31_sey1.50_1.20e11ppb
 export CURRDIR
 
 echo $PYTHONPATH
