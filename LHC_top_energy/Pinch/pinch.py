@@ -71,7 +71,7 @@ print(current_dir)
 rl.replaceline_and_save(fname = "simulation_parameters.input",
                         findln = "N_mp_max=", newline = f"N_mp_max={total_N_particles}\n")
 rl.replaceline_and_save(fname = "simulation_parameters.input",
-                        findln = "Dt_sc = ", newline = "Dt_sc = 5.e-12\n")
+                        findln = "Dt_sc = ", newline = "Dt_sc = None\n") # recompute space charge at every boris step
 rl.replaceline_and_save(fname = "simulation_parameters.input",
                         findln = "logfile_path =", newline = "logfile_path = "+"'"+ current_dir + "/logfile.txt"+"'\n")
 rl.replaceline_and_save(fname = "simulation_parameters.input",
